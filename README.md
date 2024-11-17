@@ -1,6 +1,22 @@
+# docs about deep link in android:
+
+https://codewithandrea.com/articles/flutter-deep-links/
+
+# docs about using custom domains in github-pages
+
+https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
+https://www.geeksforgeeks.org/publish-websites-on-github-pages-with-a-custom-domain/
+
 # link to this page/domain:
 
 https://tatitati.github.io/rentadvisor_domain/
+
+domain used:
+test-rentadvisor.com
+
+
+confirm dns in domain.com is working:
+dig test-rentadvisor.com +noall +answer -t A
 
 
 ## deep link stuff:
@@ -41,4 +57,52 @@ Generating 2,048 bit RSA key pair and self-signed certificate (SHA256withRSA) wi
 
 ```
 keytool -list -v -keystore key-rentadvisor.jks -alias key-rentadisor
+```
+
+3. Buy a cheap domain, and update the DNS records ot point to your github-pages:
+
+![image1](dns-domain.png)
+![image2](doc/A-records.png)
+![image3](doc/cname-records.png)
+![image4](doc/why-both.png)
+
+4.Test the domain. You have to Install android emulator first:
+
+```
+brew install android-platform-tools
+```
+
+Then test
+
+
+```
+adb shell am start -a android.intent.action.VIEW \
+      -c android.intent.category.BROWSABLE \
+      -d https://yourDomain.com \
+      <package name>
+```
+
+which results in 
+
+```
+adb shell am start -a android.intent.action.VIEW \
+    -c android.intent.category.BROWSABLE \
+    -d https://tatitati.github.io/rentadvisor_domain/ \
+    com.rentadvisor
+```
+
+
+# after configuring the dns in domain.com
+
+```
+$ dig www.test-rentadvisor.com +noall +answer -t A
+
+
+
+; <<>> DiG 9.10.6 <<>> www.test-rentadvisor.com +noall +answer -t A
+;; global options: +cmd
+www.test-rentadvisor.com. 3600	IN	A	185.199.108.153
+www.test-rentadvisor.com. 3600	IN	A	185.199.111.153
+www.test-rentadvisor.com. 3600	IN	A	185.199.110.153
+www.test-rentadvisor.com. 3600	IN	A	185.199.109.153
 ```
